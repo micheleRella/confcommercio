@@ -1,0 +1,1 @@
+@livewire('shop-delete', ['shop' => $id])
