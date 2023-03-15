@@ -28,27 +28,44 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    /* city routes */
-    Route::get('/city/create', [CitiesController::class, 'create'])->name('city.create');
-    Route::get('/city/index', [CitiesController::class, 'index'])->name('city.index');
-    Route::get('/city/edit/{id}', [CitiesController::class, 'edit'])->name('city.edit');
-    Route::delete('/city/destroy/{id}', [CitiesController::class, 'destroy'])->name('city.destroy');
 
-    /* shop routes */
-    Route::get('/shop/create', [ShopController::class, 'create'])->name('shop.create');
-    Route::get('/shop/index', [ShopController::class, 'index'])->name('shop.index');
-    Route::get('/shop/edit/{id}', [ShopController::class, 'edit'])->name('shop.edit');
-    Route::delete('/shop/destroy/{id}', [ShopController::class, 'destroy'])->name('shop.destroy');
-    Route::post('/shop/index/import', [ShopController::class, 'import'])->name('shop.import');
 
-    /* user routes */
-    Route::get('/user/create', [UserVendorController::class, 'create'])->name('user.create');
-    Route::get('/user/index', [UserVendorController::class, 'index'])->name('user.index');
-    Route::get('/user/edit/{id}', [UserVendorController::class, 'edit'])->name('user.edit');
-    Route::delete('/user/destroy/{id}', [UserVendorController::class, 'destroy'])->name('user.destroy');
+    /** PROFILE ROUTES */
+    Route::group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('destroy');
+    });
+    /** END PROFILE ROUTES */
+
+
+    /* CITIES ROUTES */
+    Route::group(['prefix' => 'city', 'as' => 'city.'], function () {
+        Route::get('/create', [CitiesController::class, 'create'])->name('create');
+        Route::get('/index', [CitiesController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [CitiesController::class, 'edit'])->name('edit');
+        Route::delete('/destroy/{id}', [CitiesController::class, 'destroy'])->name('destroy');
+    });
+    /* END CITIES ROUTES */
+
+    /* SHOP ROUTES */
+    Route::group(['prefix' => 'shop', 'as' => 'shop.'], function () {
+        Route::get('/create', [ShopController::class, 'create'])->name('create');
+        Route::get('/index', [ShopController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [ShopController::class, 'edit'])->name('edit');
+        Route::delete('/destroy/{id}', [ShopController::class, 'destroy'])->name('destroy');
+        Route::post('/index/import', [ShopController::class, 'import'])->name('import');
+    });
+    /** END SHOP ROUTES */
+
+    /** USER ROUTES */
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+        Route::get('/create', [UserVendorController::class, 'create'])->name('create');
+        Route::get('/index', [UserVendorController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [UserVendorController::class, 'edit'])->name('edit');
+        Route::delete('/destroy/{id}', [UserVendorController::class, 'destroy'])->name('destroy');
+    });
+    /* END USER ROUTES */
 });
 
 
@@ -57,4 +74,4 @@ Route::middleware(['auth', 'vendor'])->group(function () {
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
